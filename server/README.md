@@ -68,4 +68,4 @@ To ensure remote access run the following command from another machine with the 
 curl http://44.*****:4566/health
 ```
 
-For more information, please refer to [this article](https://medium.com/@esarat/installing-and-setting-up-localstack-on-a-remote-computer-a848e44b2838)--
+For more information, please refer to [this article](https://medium.com/@esarat/installing-and-setting-up-localstack-on-a-remote-computer-a848e44b2838).
