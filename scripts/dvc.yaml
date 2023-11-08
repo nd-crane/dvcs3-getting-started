@@ -1,0 +1,5 @@
+metrics:
+- ../dvclive_logs/metrics.json
+plots:
+- ../dvclive_logs/plots/metrics:
+    x: step

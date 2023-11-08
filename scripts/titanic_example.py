@@ -6,19 +6,17 @@ from fastai.tabular.all import *
 from dvclive import Live
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+import pickle
 
 
 # Setup directpry to store logs 
 live = Live("../dvclive_logs") 
 
 # Prep Data
-df_test = pd.read_csv('../data/data/test.csv')
-df_train = pd.read_csv('../data/data/train.csv')
+df_test = pd.read_csv('../data/test.csv')
+df_train = pd.read_csv('../data/train.csv')
 
-df_train.isnull().sum().sort_index()/len(df_train)
-
-df_train.dtypes
-g_train =df_train.columns.to_series().groupby(df_train.dtypes).groups
+g_train = df_train.columns.to_series().groupby(df_train.dtypes).groups
 
 cat_names  = ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
 cont_names = ['PassengerId', 'Pclass', 'SibSp', 'Parch', 'Age', 'Fare']
@@ -33,8 +31,6 @@ to = TabularPandas(df_train, procs=[Categorify, FillMissing, Normalize],
                    splits=splits)
 
 g_train =to.train.xs.columns.to_series().groupby(to.train.xs.dtypes).groups
-
-to.train.xs
 
 # Training
 X_train = to.train.xs
@@ -54,8 +50,7 @@ live.log_metric('accuracy', acc)
 live.next_step()
 
 # Test Dataset
-df_test.dtypes
-g_train =df_test.columns.to_series().groupby(df_test.dtypes).groups
+g_train = df_test.columns.to_series().groupby(df_test.dtypes).groups
 
 cat_names  = ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
 cont_names = ['PassengerId', 'Pclass', 'SibSp', 'Parch', 'Age', 'Fare']
@@ -77,4 +72,3 @@ y_pred=rnf_classifier.predict(X_test)
 y_pred= y_pred.astype(int)
 
 output= pd.DataFrame({'PassengerId':df_test.PassengerId, 'Survived': y_pred})
-output.to_csv('my_submission_titanic.csv', index=False)
