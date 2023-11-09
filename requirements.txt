@@ -3,4 +3,4 @@ pandas>=2.1.0
 fastcore>=1.5.29
 fastai>=2.7.13
 dvclive==3.0.1
-sklearn>=1.3.2
+scikit-learn>=1.3.0
