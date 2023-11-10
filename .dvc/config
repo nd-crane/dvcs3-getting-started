@@ -1,0 +1,7 @@
+[core]
+    remote = myremote
+['remote "myremote"']
+    url = s3://mytestbucket
+    endpointurl = http://dvcs3.crc.nd.edu:4566
+    access_key_id = ''
+    secret_access_key = ''
