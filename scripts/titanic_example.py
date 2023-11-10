@@ -7,68 +7,73 @@ from dvclive import Live
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import pickle
+import sys
+import os
+from ruamel.yaml import YAML
 
 
-# Setup directpry to store logs 
-live = Live("../dvclive_logs") 
+def prep_data(df, split=0.2):
 
-# Prep Data
-df_test = pd.read_csv('../data/test.csv')
-df_train = pd.read_csv('../data/train.csv')
+    cat_names  = ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
+    cont_names = ['PassengerId', 'Pclass', 'SibSp', 'Parch', 'Age', 'Fare']
 
-g_train = df_train.columns.to_series().groupby(df_train.dtypes).groups
+    splits = RandomSplitter(valid_pct=split)(range_of(df))
 
-cat_names  = ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
-cont_names = ['PassengerId', 'Pclass', 'SibSp', 'Parch', 'Age', 'Fare']
-
-splits = RandomSplitter(valid_pct=0.2)(range_of(df_train))
-
-# Preprocess Data
-to = TabularPandas(df_train, procs=[Categorify, FillMissing, Normalize],
+    to = TabularPandas(df, procs=[Categorify, FillMissing, Normalize],
                    cat_names = cat_names,
                    cont_names = cont_names,
                    y_names = 'Survived',
                    splits=splits)
+    
 
-g_train =to.train.xs.columns.to_series().groupby(to.train.xs.dtypes).groups
+    X_train = to.train.xs
+    X_valid = to.valid.xs
 
-# Training
-X_train = to.train.xs
-X_valid = to.valid.xs
+    y_train = to.train.ys.values.ravel()
+    y_valid = to.valid.ys.values.ravel()
 
-y_train = to.train.ys.values.ravel()
-y_valid = to.valid.ys.values.ravel()
+    return X_train, X_valid, y_train, y_valid
 
-rnf_classifier= RandomForestClassifier(n_estimators=100, n_jobs=-1)
-rnf_classifier.fit(X_train,y_train)
 
-y_pred = rnf_classifier.predict(X_valid)
-acc = accuracy_score(y_pred, y_valid)
 
-# Make sure to log the accuracy in DVCLive
-live.log_metric('accuracy', acc)
-live.next_step()
+def main():
 
-# Test Dataset
-g_train = df_test.columns.to_series().groupby(df_test.dtypes).groups
+    live = Live(dir="logs", dvcyaml=False, report=None)
+    
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+    train_data_file = os.path.join(script_directory, '..', 'data', 'train.csv')
+    test_data_file = os.path.join(script_directory, '..', 'data', 'test.csv')
+    params_file = os.path.join(script_directory, '..', 'params.yaml')
 
-cat_names  = ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
-cont_names = ['PassengerId', 'Pclass', 'SibSp', 'Parch', 'Age', 'Fare']
+    # here's where we can parameterize the script for quick experimentation with DVC
+    # this is similar to command line args, but we'll use the DVC technique instead
+    
+    # load params
+    yaml = YAML(typ="safe")
+    with open("params.yaml") as f:
+        params = yaml.load(f)
 
-test = TabularPandas(df_test, procs=[Categorify, FillMissing,Normalize],
-                   cat_names = cat_names,
-                   cont_names = cont_names,
-                   )
+    # load data
 
-X_test= test.train.xs
+    df_test = pd.read_csv(test_data_file)
+    df_train = pd.read_csv(train_data_file)
 
-X_test.dtypes
-g_train =X_test.columns.to_series().groupby(X_test.dtypes).groups
 
-X_test= X_test.drop('Fare_na', axis=1)
+    X_train, X_valid, y_train, y_valid = prep_data(df_train, split=0.2)
 
-y_pred=rnf_classifier.predict(X_test)
+    rnf_classifier= RandomForestClassifier(n_estimators=params["num_estimators"], n_jobs=-1)
+    rnf_classifier.fit(X_train,y_train)
 
-y_pred= y_pred.astype(int)
+    y_pred = rnf_classifier.predict(X_valid)
+    acc = accuracy_score(y_pred, y_valid)
 
-output= pd.DataFrame({'PassengerId':df_test.PassengerId, 'Survived': y_pred})
+    live.log_metric('accuracy',acc)
+
+    model_filename = 'rnf_classifier.pkl'
+    with open(model_filename, 'wb') as model_file:
+        pickle.dump(rnf_classifier, model_file)
+
+    live.end()    
+
+if __name__ == "__main__":
+    main()
