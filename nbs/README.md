@@ -32,7 +32,7 @@ This model was created as a toy-example for working with DVC. It is not intended
 
 ## Bias, Risks, and Limitations
 
-Insert questions, comments, and concerns from Laurette.
+The data does not include information on crew members, allocation of resources (e.g. lifeboats) during the disaster, or other interactions among passengers. The model may reinforce biases regarding race or economic class that originally affected survival rates.
 
 ## Training Details
 
