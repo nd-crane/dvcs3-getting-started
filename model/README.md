@@ -38,7 +38,7 @@ The data does not include information on crew members, allocation of resources (
 
 ### Training Data
 
-Insert [link] to dataset card once data directory is created.
+https://github.com/nd-crane/dvcs3-getting-started/blob/main/data/README.md
 
 ### Training Procedure 
 
@@ -52,7 +52,7 @@ The training data was split so that 20% of the data would be included in a valid
 
 #### Testing Data
 
-Insert [link] to dataset card once data directory is created.
+https://github.com/nd-crane/dvcs3-getting-started/blob/main/data/README.md
 
 #### Metrics
 
