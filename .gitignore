@@ -1,2 +1,4 @@
 data/*.csv
-venv/
+env/
+/data
+/rnf_classifier.pkl
