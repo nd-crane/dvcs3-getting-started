@@ -9,9 +9,9 @@ This READ.md showcases the process in which our team took to set up our visualiz
 ## Editing Model Script
 
 *Text*
-'''
+```
 Code
-'''
+```
 *Text*
 
 ## Setting Params
