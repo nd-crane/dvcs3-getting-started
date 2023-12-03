@@ -5,7 +5,7 @@ This READ.md showcases the process in which our team took to set up our visualiz
 ## Setting up VSCode
 
 ### Downloading VSCode
-We must begin by first installing VSCode instead which can be done via the link below
+We must begin by first installing VSCode instead which can be done via this link
 https://code.visualstudio.com/download
 
 ### Setting up DVC extenions
