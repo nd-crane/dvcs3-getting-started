@@ -53,12 +53,12 @@ This file dictates the number of estimators we want to use within our model trai
 
 ## Creating DVC Pipeline
 
-*Text*
+Although there is only one stage within this pipeline, the yaml file serves as an outline of what should be included within a dvc pipeline including your command (script), dependacies, parameters, outputs and plots.
 
 ## Updating .gitingore Files
 
-*Text*
+This file makes sure to keep the Github clean by excluding the enviroment used to run the script, the data files themsleves, the classifer (model output) file, and the logs. The reason for this is so you can simple clone the repo and then run the experiments yourself without having to worry about file discrepencies.
 
 ## Resolving Possible Problems 
 
-*Text*
+One of the probelms that we ran into was not beign able to get our dvclive to initialize. This was solved by adjusting the pointer to python to the specifc version of python used within the env.
