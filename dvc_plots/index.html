@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>DVC Plot</title>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.18.2"></script>
+    
+    <style>
+        table {
+            border-spacing: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div id = "logs_plots_metrics_accuracy_tsv">
+        <script type = "text/javascript">
+            var spec = {"$schema": "https://vega.github.io/schema/vega-lite/v5.json", "data": {"values": [{"step": 0, "accuracy": "0.8146067415730337", "rev": "workspace"}, {"step": 1, "accuracy": "0.8202247191011236", "rev": "workspace"}, {"step": 2, "accuracy": "0.8202247191011236", "rev": "workspace"}, {"step": 3, "accuracy": "0.8258426966292135", "rev": "workspace"}, {"step": 4, "accuracy": "0.8370786516853933", "rev": "workspace"}, {"step": 5, "accuracy": "0.8202247191011236", "rev": "workspace"}, {"step": 6, "accuracy": "0.8314606741573034", "rev": "workspace"}, {"step": 7, "accuracy": "0.8370786516853933", "rev": "workspace"}, {"step": 8, "accuracy": "0.8314606741573034", "rev": "workspace"}, {"step": 9, "accuracy": "0.8202247191011236", "rev": "workspace"}]}, "title": "logs/plots/metrics/accuracy.tsv", "width": 300, "height": 300, "params": [{"name": "smooth", "value": 0.001, "bind": {"input": "range", "min": 0.001, "max": 1, "step": 0.001}}], "layer": [{"mark": "line", "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "accuracy", "type": "quantitative", "title": "accuracy", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}, "tooltip": [{"field": "step", "title": "step", "type": "quantitative"}, {"field": "accuracy", "title": "accuracy", "type": "quantitative"}]}, "transform": [{"loess": "accuracy", "on": "step", "groupby": ["rev", "filename", "field", "filename::field"], "bandwidth": {"signal": "smooth"}}]}, {"mark": {"type": "line", "opacity": 0.2}, "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "accuracy", "type": "quantitative", "title": "accuracy", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}, "tooltip": [{"field": "step", "title": "step", "type": "quantitative"}, {"field": "accuracy", "title": "accuracy", "type": "quantitative"}]}}, {"mark": {"type": "circle", "size": 10, "tooltip": {"content": "encoding"}}, "encoding": {"x": {"aggregate": "max", "field": "step", "type": "quantitative", "title": "step"}, "y": {"aggregate": {"argmax": "step"}, "field": "accuracy", "type": "quantitative", "title": "accuracy", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}}]};
+            vegaEmbed('#logs_plots_metrics_accuracy_tsv', spec);
+        </script>
+    </div>
+    
+</body>
+</html>
