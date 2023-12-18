@@ -1,0 +1,38 @@
+schema: '2.0'
+stages:
+  train_and_evaluate:
+    cmd: python src/titanic_example.py
+    deps:
+    - path: data/test.csv
+      hash: md5
+      md5: 7533b82eae4b582610cbd68aa636b017
+      size: 28629
+    - path: data/train.csv
+      hash: md5
+      md5: 2309cc5f04782ed9bb6016d9f4e381cf
+      size: 61194
+    - path: params.yaml
+      hash: md5
+      md5: 309e501024eaf2976ff9a6b57cf3e7f3
+      size: 34
+    - path: src/titanic_example.py
+      hash: md5
+      md5: cab791916f15eb7f6a4c548ea6b8b951
+      size: 3272
+    params:
+      params.yaml:
+        num_estimators: 100
+    outs:
+    - path: model/rnf_classifier.pkl
+      hash: md5
+      md5: 1aa3386beaf3fcd0c280f0945b7dc3b2
+      size: 1477338
+    - path: results/metrics.json
+      hash: md5
+      md5: ffa245c2bdb2be144fa8018a5f0f9f34
+      size: 54
+    - path: results/plots/metrics
+      hash: md5
+      md5: 6c62b3796b5595cf8390e5a65943c041.dir
+      size: 221
+      nfiles: 1

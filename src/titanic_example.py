@@ -1,7 +1,23 @@
 #!/usr/bin/env python3
 
-import pandas as pd
+# This is a simple example of a machine learning model training script.
+# It trains a Random Forest Classifier on the Titanic dataset and logs
+# the accuracy metric over multiple iterations (epochs) using dvclive.
+
+# The script is based on the following tutorial:
+# https://www.kaggle.com/code/hitesh1724/titanic-1-fastai-beginner-tutorial
+
+# And uses the Kaggle Titanic dataset:
+# https://www.kaggle.com/c/titanic/data
+
+# Authors: Peter Ainsworth and Conner Rauguth
+
+# Import standard libraries
 import os
+from pathlib import Path
+
+# Import third-party libraries
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import pickle
@@ -9,6 +25,7 @@ from ruamel.yaml import YAML
 from fastai.tabular.all import *
 from dvclive import Live
 
+# Prepare data for training
 def prep_data(df, split=0.2):
     cat_names = ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
     cont_names = ['PassengerId', 'Pclass', 'Age', 'SibSp', 'Parch', 'Fare']
@@ -25,11 +42,12 @@ def prep_data(df, split=0.2):
     return X_train, X_valid, y_train, y_valid
 
 def main():
-    # Create logs directory if it doesn't exist
-    os.makedirs('logs', exist_ok=True)
-    
+    # Create results directory if it doesn't exist
+    results_dir = Path('results')    
+    results_dir.mkdir(exist_ok=True)
+
     # Initialize dvclive
-    live = Live(dir="logs", dvcyaml=False, report=None)
+    live = Live(dir=results_dir, dvcyaml=False, report=None)
     
     script_directory = os.path.dirname(os.path.abspath(__file__))
     train_data_file = os.path.join(script_directory, '..', 'data', 'train.csv')
@@ -43,9 +61,15 @@ def main():
     # Load data
     df_train = pd.read_csv(train_data_file)
     X_train, X_valid, y_train, y_valid = prep_data(df_train, split=0.2)
+
+    # set the params
+    train_params = {
+        "n_estimators": params["num_estimators"],
+        "max_depth": params["max_depth"],
+    }
     
     # Train the model and log metrics over multiple iterations
-    rnf_classifier = RandomForestClassifier(n_estimators=params["num_estimators"], n_jobs=-1)
+    rnf_classifier = RandomForestClassifier(**train_params)
     
     # Example: Simulate 10 iterations (epochs)
     for epoch in range(10):
@@ -61,8 +85,11 @@ def main():
         live.next_step()  # Advance to the next step to simulate time progression
 
     # Save the model after training
+    models_dir = Path('model')
+    models_dir.mkdir(exist_ok=True)
     model_filename = 'rnf_classifier.pkl'
-    with open(model_filename, 'wb') as model_file:
+
+    with open((models_dir / model_filename).absolute(), 'wb') as model_file:
         pickle.dump(rnf_classifier, model_file)
     
 if __name__ == "__main__":

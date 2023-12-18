@@ -1,14 +1,18 @@
 stages:
   train_and_evaluate:
-    cmd: python scripts/titanic_example.py
+    cmd: python src/titanic_example.py
     deps:
-      - scripts/titanic_example.py
+      - src/titanic_example.py
       - data/train.csv
       - data/test.csv
       - params.yaml
     params:
       - num_estimators
     outs:
-      - rnf_classifier.pkl
+      - model/rnf_classifier.pkl
     plots:
-      - logs  
+      - results/plots/metrics:
+          x: step
+          y: accuracy
+    metrics:
+    - results/metrics.json

@@ -3,3 +3,4 @@ env/
 /rnf_classifier.pkl
 logs/
 .venv/
+/logs

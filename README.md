@@ -12,48 +12,35 @@ As you can see at each stage we apply a different technique to securing the mach
 
 All of this is managed with DVC.  Let's first explore setting up DVC and how to use its powerful capabilities.
 
-## DVC Client
+## Installation
 
-Here's how to configure a DVC workflow with AWS's S3 buckets.  This configuration is specific to localstack, but can be applied to any S3 instance.
-
-For more information on the server side configuration, please view the `server-side` branch.
-
-### Getting Started
-
-### Initalizing DVC
-
-To initialize a DVC project inside a Git project run:
+Python 3.8+ is required to run this repo.
 
 ```bash
-dvc init
+$ git clone git@github.com:nd-crane/dvcs3-getting-started.git
+$ cd dvcs3-getting-started/
 ```
 
-DVC requires an underlying Git project to properly track data.  If the current directory is not part of a git repository either clone an existing repository or run `git init` prior to initializing DVC.
-
-### Adding S3 Buckets
-
-DVC supports Amazon S3 buckets for remote storage (in addition to many other options).  To add a remote bucket run:
+Let's install the requirements.  In this project we are using a python virtual environment for dependency managaement, but Conda and PDM work as well.
 
 ```bash
-dvc remote add -d myremote s3://<bucket>/key
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
 ```
 
-With the localstack configuration there will be no key.  Since the localstack endpoint is different from a typical AWS bucket, we need to specify it in the DVC config file.  The `endpointurl` parameter can be modified with the following command:
+As depicted above, source data is stored in S3 Buckets with DVC remote storage.  This is a read only HTTP remote.
 
 ```bash
-dvc remote modify myremore endpointurl http://<domain>:<port>
+$ dvc remote list
+myemote     s3://mytestbucket
 ```
 
-These commands will modify the `.dvc/config` file.  All settings can be written to that file with the appropriate `.ini` format.
-
-With S3 buckets set up data can be pushed with:
+You should run `dvc pull` to download the data.
 
 ```bash
-dvc add <file>
-dvc push
+$ dvc pull
 ```
 
+## Running Experiments
 
-### Further Information
-
-For more information please refer to the (DVC Docs)[https://dvc.org/doc/user-guide/data-management/remote-storage/amazon-s3]
