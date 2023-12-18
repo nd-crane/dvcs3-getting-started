@@ -1,6 +1,6 @@
 data/*.csv
 env/
-/data
 /rnf_classifier.pkl
 logs/
 /logs
+.venv/
