@@ -2,5 +2,4 @@ data/*.csv
 env/
 /rnf_classifier.pkl
 logs/
-/logs
 .venv/
