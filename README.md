@@ -200,14 +200,14 @@ Finally we must setup a loop to train the model over a set amount of iterations.
         live.next_step()  # Advance to the next step to simulate time progression
 ```
 
-## Setting Params
+##### Setting Params
 
 `params.yaml` dictates the number of estimators we want to use within our model training.
 
-## Updating .gitingore Files
+##### Updating .gitingore Files
 
 This file makes sure to keep the Github clean by excluding the enviroment used to run the script, the data files themsleves, the classifer (model output) file, and the logs. The reason for this is so you can simpley clone the repo and then run the experiments yourself without having to worry about file discrepencies.
 
-## Resolving Possible Problems 
+##### Resolving Possible Problems 
 
 One of the probelms we ran into was not being able to get our dvclive to initialize. This was solved by adjusting the pointer to python to the specifc version of python used within the env.
